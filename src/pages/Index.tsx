@@ -10,41 +10,59 @@ interface Track {
   artist: string;
   url: string;
   duration: number;
-  isDemo?: boolean;
+  isBuiltIn?: boolean;
+}
+
+interface Playlist {
+  id: string;
+  name: string;
+  tracks: Track[];
+  createdAt: Date;
 }
 
 function Index() {
-  // Предустановленные демо-треки
-  const demoTracks: Track[] = [
-    { id: 'demo1', name: 'Мёртвый Анархист', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 180, isDemo: true },
-    { id: 'demo2', name: 'Золото мёртвых', artist: 'NAGART', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 200, isDemo: true },
-    { id: 'demo3', name: 'Демобилизация', artist: 'Сектор Газа', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 195, isDemo: true },
-    { id: 'demo4', name: 'Твой звонок', artist: 'Сектор Газа', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 170, isDemo: true },
-    { id: 'demo5', name: 'Лирика', artist: 'Сектор Газа', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 210, isDemo: true },
-    { id: 'demo6', name: 'Камнем по голове', artist: 'КиШ', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 155, isDemo: true },
-    { id: 'demo7', name: 'Охотник', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 240, isDemo: true },
-    { id: 'demo8', name: 'Пиво-Пиво-Пиво', artist: 'КняZz', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 190, isDemo: true },
-    { id: 'demo9', name: 'Лесник', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 220, isDemo: true },
-    { id: 'demo10', name: 'Танец злобного гения', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 205, isDemo: true },
-    { id: 'demo11', name: 'Кукла колдуна', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 175, isDemo: true },
-    { id: 'demo12', name: 'Дагон', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 160, isDemo: true },
-    { id: 'demo13', name: 'Прыгну со скалы', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 185, isDemo: true },
-    { id: 'demo14', name: 'Бомж', artist: 'Сектор Газа', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 145, isDemo: true },
-    { id: 'demo15', name: 'Дурак и молния', artist: 'Король и Шут', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 195, isDemo: true },
-    { id: 'demo16', name: 'Музыка нас связала', artist: 'Мираж', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 225, isDemo: true },
-    { id: 'demo17', name: 'Komarovo (DVRST Phonk Remix)', artist: 'DVRST, Игорь Скляр, Atomic Heart', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 180, isDemo: true },
-    { id: 'demo18', name: 'Всё, что касается', artist: 'Звери', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 200, isDemo: true },
-    { id: 'demo19', name: 'Районы-кварталы', artist: 'Звери', url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', duration: 215, isDemo: true }
+  // Встроенные треки - всегда доступны на сайте
+  const builtInTracks: Track[] = [
+    { id: 'builtin1', name: 'Мёртвый Анархист', artist: 'Король и Шут', url: '', duration: 213, isBuiltIn: true },
+    { id: 'builtin2', name: 'Золото мёртвых', artist: 'NAGART', url: '', duration: 195, isBuiltIn: true },
+    { id: 'builtin3', name: 'Демобилизация', artist: 'Сектор Газа', url: '', duration: 177, isBuiltIn: true },
+    { id: 'builtin4', name: 'Твой звонок', artist: 'Сектор Газа', url: '', duration: 168, isBuiltIn: true },
+    { id: 'builtin5', name: 'Лирика', artist: 'Сектор Газа', url: '', duration: 201, isBuiltIn: true },
+    { id: 'builtin6', name: 'Камнем по голове', artist: 'КиШ', url: '', duration: 156, isBuiltIn: true },
+    { id: 'builtin7', name: 'Охотник', artist: 'Король и Шут', url: '', duration: 224, isBuiltIn: true },
+    { id: 'builtin8', name: 'Пиво-Пиво-Пиво', artist: 'КняZz', url: '', duration: 189, isBuiltIn: true },
+    { id: 'builtin9', name: 'Лесник', artist: 'Король и Шут', url: '', duration: 191, isBuiltIn: true },
+    { id: 'builtin10', name: 'Танец злобного гения', artist: 'Король и Шут', url: '', duration: 205, isBuiltIn: true },
+    { id: 'builtin11', name: 'Кукла колдуна', artist: 'Король и Шут', url: '', duration: 176, isBuiltIn: true },
+    { id: 'builtin12', name: 'Дагон', artist: 'Король и Шут', url: '', duration: 163, isBuiltIn: true },
+    { id: 'builtin13', name: 'Прыгну со скалы', artist: 'Король и Шут', url: '', duration: 184, isBuiltIn: true },
+    { id: 'builtin14', name: 'Бомж', artist: 'Сектор Газа', url: '', duration: 142, isBuiltIn: true },
+    { id: 'builtin15', name: 'Дурак и молния', artist: 'Король и Шут', url: '', duration: 198, isBuiltIn: true },
+    { id: 'builtin16', name: 'Музыка нас связала', artist: 'Мираж', url: '', duration: 225, isBuiltIn: true },
+    { id: 'builtin17', name: 'Komarovo (DVRST Phonk Remix)', artist: 'DVRST, Игорь Скляр, Atomic Heart', url: '', duration: 180, isBuiltIn: true },
+    { id: 'builtin18', name: 'Всё, что касается', artist: 'Звери', url: '', duration: 203, isBuiltIn: true },
+    { id: 'builtin19', name: 'Районы-кварталы', artist: 'Звери', url: '', duration: 218, isBuiltIn: true },
   ];
 
-  const [tracks, setTracks] = useState<Track[]>(demoTracks);
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(demoTracks[0]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([
+    { id: 'main', name: '🎵 Главный плейлист', tracks: builtInTracks, createdAt: new Date() },
+    { id: 'uploaded', name: '📁 Загруженная музыка', tracks: [], createdAt: new Date() }
+  ]);
+  
+  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist>(playlists[0]);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(builtInTracks[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState([70]);
+  const [volume, setVolume] = useState([85]);
+  const [showCreatePlaylist, setShowCreatePlaylist] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState('');
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [isRepeat, setIsRepeat] = useState(false);
+  
   const audioRef = useRef<HTMLAudioElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const playbackIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -52,7 +70,14 @@ function Index() {
 
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
-    const handleEnded = () => playNext();
+    const handleEnded = () => {
+      if (isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        playNext();
+      }
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
@@ -63,7 +88,7 @@ function Index() {
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [currentTrack]);
+  }, [currentTrack, isRepeat]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -75,7 +100,10 @@ function Index() {
     const files = event.target.files;
     if (!files) return;
 
-    Array.from(files).forEach((file) => {
+    const uploadedPlaylist = playlists.find(p => p.id === 'uploaded');
+    if (!uploadedPlaylist) return;
+
+    Array.from(files).forEach(file => {
       if (file.type.startsWith('audio/')) {
         const url = URL.createObjectURL(file);
         const track: Track = {
@@ -84,68 +112,49 @@ function Index() {
           artist: 'Загруженный трек',
           url,
           duration: 0,
-          isDemo: false
+          isBuiltIn: false
         };
-        
-        setTracks(prev => [...prev, track]);
-        
+
+        // Добавляем трек в плейлист загруженной музыки
+        setPlaylists(prev => prev.map(playlist => 
+          playlist.id === 'uploaded'
+            ? { ...playlist, tracks: [...playlist.tracks, track] }
+            : playlist
+        ));
+
+        // Автоматически переключаемся на плейлист загруженной музыки
+        if (uploadedPlaylist.tracks.length === 0) {
+          setCurrentPlaylist(prev => prev.id === 'uploaded' ? { ...prev, tracks: [track] } : prev);
+        }
+
         if (!currentTrack) {
           setCurrentTrack(track);
         }
       }
     });
-  };
 
-  const togglePlayPause = () => {
-    if (!audioRef.current || !currentTrack) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
-    setIsPlaying(!isPlaying);
-  };
-
-  const playNext = () => {
-    if (!currentTrack || tracks.length === 0) return;
-    
-    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
-    const nextIndex = (currentIndex + 1) % tracks.length;
-    const nextTrack = tracks[nextIndex];
-    
-    setCurrentTrack(nextTrack);
-    setIsPlaying(true);
-  };
-
-  const playPrevious = () => {
-    if (!currentTrack || tracks.length === 0) return;
-    
-    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
-    const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1;
-    const prevTrack = tracks[prevIndex];
-    
-    setCurrentTrack(prevTrack);
-    setIsPlaying(true);
-  };
-
-  const selectTrack = (track: Track) => {
-    setCurrentTrack(track);
-    setIsPlaying(true);
   };
 
   const removeTrack = (trackId: string) => {
-    // Не позволяем удалять демо-треки
-    const trackToRemove = tracks.find(t => t.id === trackId);
-    if (trackToRemove?.isDemo) return;
+    const trackToRemove = currentPlaylist.tracks.find(t => t.id === trackId);
+    if (trackToRemove?.isBuiltIn) return; // Защищаем встроенные треки
+
+    const updatedTracks = currentPlaylist.tracks.filter(t => t.id !== trackId);
     
-    const updatedTracks = tracks.filter(t => t.id !== trackId);
-    setTracks(updatedTracks);
+    setPlaylists(prev => prev.map(playlist => 
+      playlist.id === currentPlaylist.id 
+        ? { ...playlist, tracks: updatedTracks }
+        : playlist
+    ));
+    
+    setCurrentPlaylist(prev => ({ ...prev, tracks: updatedTracks }));
     
     if (currentTrack?.id === trackId) {
       if (updatedTracks.length > 0) {
         setCurrentTrack(updatedTracks[0]);
-        setIsPlaying(true);
       } else {
         setCurrentTrack(null);
         setIsPlaying(false);
@@ -153,28 +162,140 @@ function Index() {
     }
   };
 
-  const loadDemoTrack = (track: Track) => {
-    // Создаем аудио-контекст для генерации демо-звука
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    // Генерируем разные тоны для разных треков
-    const frequency = 440 + (parseInt(track.id.replace('demo', '')) * 50);
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-    
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 2);
-    
+  const selectTrack = (track: Track) => {
     setCurrentTrack(track);
-    setIsPlaying(true);
+    setCurrentTime(0);
+    setDuration(track.duration);
+    
+    if (track.isBuiltIn) {
+      // Для встроенных треков используем симуляцию воспроизведения
+      if (playbackIntervalRef.current) {
+        clearInterval(playbackIntervalRef.current);
+      }
+      
+      if (isPlaying) {
+        playbackIntervalRef.current = setInterval(() => {
+          setCurrentTime(prev => {
+            if (prev >= track.duration) {
+              clearInterval(playbackIntervalRef.current!);
+              if (isRepeat) {
+                setCurrentTime(0);
+                return 0;
+              } else {
+                playNext();
+                return track.duration;
+              }
+            }
+            return prev + 1;
+          });
+        }, 1000);
+      }
+    } else {
+      // Для загруженных треков используем реальное воспроизведение
+      if (audioRef.current) {
+        audioRef.current.src = track.url;
+        audioRef.current.load();
+        if (isPlaying) {
+          audioRef.current.play().catch(console.error);
+        }
+      }
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (!currentTrack) return;
+
+    const newIsPlaying = !isPlaying;
+    setIsPlaying(newIsPlaying);
+
+    if (currentTrack.isBuiltIn) {
+      // Управление симуляцией для встроенных треков
+      if (newIsPlaying) {
+        playbackIntervalRef.current = setInterval(() => {
+          setCurrentTime(prev => {
+            if (prev >= currentTrack.duration) {
+              clearInterval(playbackIntervalRef.current!);
+              if (isRepeat) {
+                setCurrentTime(0);
+                return 0;
+              } else {
+                setIsPlaying(false);
+                playNext();
+                return currentTrack.duration;
+              }
+            }
+            return prev + 1;
+          });
+        }, 1000);
+      } else {
+        if (playbackIntervalRef.current) {
+          clearInterval(playbackIntervalRef.current);
+        }
+      }
+    } else {
+      // Управление реальным воспроизведением для загруженных треков
+      if (audioRef.current) {
+        if (newIsPlaying) {
+          audioRef.current.play().catch(console.error);
+        } else {
+          audioRef.current.pause();
+        }
+      }
+    }
+  };
+
+  const playNext = () => {
+    const currentIndex = currentPlaylist.tracks.findIndex(t => t.id === currentTrack?.id);
+    let nextIndex;
+    
+    if (isShuffled) {
+      nextIndex = Math.floor(Math.random() * currentPlaylist.tracks.length);
+    } else {
+      nextIndex = (currentIndex + 1) % currentPlaylist.tracks.length;
+    }
+    
+    selectTrack(currentPlaylist.tracks[nextIndex]);
+  };
+
+  const playPrevious = () => {
+    const currentIndex = currentPlaylist.tracks.findIndex(t => t.id === currentTrack?.id);
+    const prevIndex = currentIndex === 0 ? currentPlaylist.tracks.length - 1 : currentIndex - 1;
+    selectTrack(currentPlaylist.tracks[prevIndex]);
+  };
+
+  const seekTo = (newTime: number[]) => {
+    const time = newTime[0];
+    setCurrentTime(time);
+    
+    if (currentTrack?.isBuiltIn) {
+      // Для встроенных треков просто обновляем время
+      if (playbackIntervalRef.current) {
+        clearInterval(playbackIntervalRef.current);
+      }
+      if (isPlaying) {
+        playbackIntervalRef.current = setInterval(() => {
+          setCurrentTime(prev => {
+            if (prev >= currentTrack.duration) {
+              clearInterval(playbackIntervalRef.current!);
+              if (isRepeat) {
+                setCurrentTime(0);
+                return 0;
+              } else {
+                setIsPlaying(false);
+                playNext();
+                return currentTrack.duration;
+              }
+            }
+            return prev + 1;
+          });
+        }, 1000);
+      }
+    } else {
+      // Для загруженных треков обновляем реальное время
+      if (audioRef.current) {
+        audioRef.current.currentTime = time;
+      }
+    }
   };
 
   const formatTime = (seconds: number) => {
@@ -183,295 +304,321 @@ function Index() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleProgressChange = (value: number[]) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = value[0];
-      setCurrentTime(value[0]);
-    }
+  const createPlaylist = () => {
+    if (!newPlaylistName.trim()) return;
+    
+    const newPlaylist: Playlist = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: newPlaylistName,
+      tracks: [],
+      createdAt: new Date()
+    };
+    
+    setPlaylists(prev => [...prev, newPlaylist]);
+    setNewPlaylistName('');
+    setShowCreatePlaylist(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F0F14] via-[#1A1A1A] to-[#0A0A0F] text-white p-4 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-[#D946EF] to-[#F97316] rounded-full blur-3xl animate-pulse delay-700"></div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-block">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#D946EF] bg-clip-text text-transparent animate-fade-in">
-              🎵 Music Player
-            </h1>
-            <div className="h-1 w-full bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full animate-fade-in delay-300"></div>
-          </div>
-          <p className="text-gray-300 text-lg mt-4 animate-fade-in delay-500">
-            Загружайте и слушайте вашу музыку в стиле
-          </p>
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-4">
+            🎵 Music Player Pro
+          </h1>
+          <p className="text-gray-300 text-lg">Встроенная коллекция + загрузка своей музыки</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Player */}
-          <div className="lg:col-span-2">
-            <Card className="bg-gradient-to-br from-[#2D2D2D] to-[#1F1F23] border-gray-600 shadow-2xl backdrop-blur-sm animate-scale-in">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-xl font-bold text-white truncate">
-                      {currentTrack ? currentTrack.name : 'Выберите трек'}
-                    </h2>
-                    {currentTrack && (
-                      <div className="flex items-center space-x-2 mt-1">
-                        <p className="text-sm text-gray-400">{currentTrack.artist}</p>
-                        {currentTrack.isDemo && (
-                          <span className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white text-xs px-2 py-1 rounded-full">
-                            DEMO
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar - Плейлисты */}
+          <div className="lg:col-span-1">
+            <Card className="bg-gray-900/80 border-purple-500/30 backdrop-blur-sm shadow-2xl">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white flex items-center space-x-2">
+                    <Icon name="Library" size={20} className="text-purple-400" />
+                    <span>Плейлисты</span>
+                  </CardTitle>
+                  <Button
+                    onClick={() => setShowCreatePlaylist(true)}
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700 shadow-lg"
+                  >
+                    <Icon name="Plus" size={16} />
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {showCreatePlaylist && (
+                  <div className="space-y-3 p-4 bg-gray-800/60 rounded-lg border border-purple-500/20">
+                    <input
+                      value={newPlaylistName}
+                      onChange={(e) => setNewPlaylistName(e.target.value)}
+                      placeholder="Название плейлиста"
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                      onKeyPress={(e) => e.key === 'Enter' && createPlaylist()}
+                    />
+                    <div className="flex space-x-2">
+                      <Button onClick={createPlaylist} size="sm" className="bg-green-600 hover:bg-green-700 flex-1">
+                        Создать
+                      </Button>
+                      <Button onClick={() => setShowCreatePlaylist(false)} variant="outline" size="sm" className="flex-1">
+                        Отмена
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                
+                {playlists.map(playlist => (
+                  <div
+                    key={playlist.id}
+                    onClick={() => setCurrentPlaylist(playlist)}
+                    className={`p-4 rounded-lg cursor-pointer transition-all duration-200 ${
+                      currentPlaylist.id === playlist.id
+                        ? 'bg-gradient-to-r from-purple-600/40 to-pink-600/40 border border-purple-400/50 shadow-lg'
+                        : 'bg-gray-800/40 hover:bg-gray-700/50 border border-gray-700/50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Icon 
+                        name={playlist.id === 'main' ? 'Star' : playlist.id === 'uploaded' ? 'Upload' : 'Music'} 
+                        size={16} 
+                        className={currentPlaylist.id === playlist.id ? 'text-purple-300' : 'text-gray-400'} 
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{playlist.name}</p>
+                        <p className="text-xs text-gray-400">{playlist.tracks.length} треков</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Now Playing Card */}
+            {currentTrack && (
+              <Card className="bg-gradient-to-r from-purple-900/60 to-pink-900/60 border-purple-500/30 backdrop-blur-sm shadow-2xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-6">
+                    <div className="flex-shrink-0 w-24 h-24 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-xl">
+                      <Icon name="Music" size={32} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h2 className="text-2xl font-bold text-white truncate mb-1">
+                        {currentTrack.name}
+                      </h2>
+                      <div className="flex items-center space-x-3 mb-2">
+                        <p className="text-purple-200">{currentTrack.artist}</p>
+                        {currentTrack.isBuiltIn && (
+                          <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full">
+                            ВСТРОЕННЫЙ
                           </span>
                         )}
                       </div>
-                    )}
-                  </div>
-                  <Button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white border-0 shadow-lg hover-scale transition-all duration-300"
-                    size="sm"
-                  >
-                    <Icon name="Upload" size={16} className="mr-2" />
-                    Загрузить
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-8 pt-6">
-                {/* Now Playing Display */}
-                {currentTrack && (
-                  <div className="text-center p-6 bg-gradient-to-r from-[#6366F1]/10 to-[#8B5CF6]/10 rounded-xl border border-[#6366F1]/20">
-                    <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full flex items-center justify-center animate-pulse shadow-lg">
-                      <Icon name={isPlaying ? "Pause" : "Play"} size={28} className="text-white" />
+                      <div className="flex items-center space-x-2 text-sm text-purple-300">
+                        <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`}></div>
+                        <span>{isPlaying ? 'Воспроизводится' : 'Приостановлено'}</span>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{currentTrack.name}</h3>
-                    <p className="text-sm text-gray-300 mb-3">{currentTrack.artist}</p>
-                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-400">
-                      <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`}></div>
-                      <span>{isPlaying ? 'Воспроизводится' : 'Приостановлено'}</span>
-                      {currentTrack.isDemo && (
-                        <>
-                          <span>•</span>
-                          <span className="text-[#6366F1]">Демо версия</span>
-                        </>
-                      )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Player Controls */}
+            <Card className="bg-gray-900/80 border-purple-500/30 backdrop-blur-sm shadow-2xl">
+              <CardContent className="p-6">
+                {/* Progress Bar */}
+                {currentTrack && (
+                  <div className="space-y-2 mb-6">
+                    <Slider
+                      value={[currentTime]}
+                      onValueChange={seekTo}
+                      max={duration || 100}
+                      step={1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-sm text-gray-400">
+                      <span>{formatTime(currentTime)}</span>
+                      <span>{formatTime(duration)}</span>
                     </div>
                   </div>
                 )}
 
-                {/* Progress Bar */}
-                <div className="space-y-3">
-                  <Slider
-                    value={[currentTime]}
-                    max={duration || 100}
-                    step={1}
-                    onValueChange={handleProgressChange}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-gray-400">
-                    <span className="font-mono">{formatTime(currentTime)}</span>
-                    <span className="font-mono">{formatTime(duration)}</span>
-                  </div>
-                </div>
+                {/* Control Buttons */}
+                <div className="flex items-center justify-center space-x-4 mb-6">
+                  <Button
+                    onClick={() => setIsShuffled(!isShuffled)}
+                    variant="outline"
+                    size="lg"
+                    className={`rounded-full ${isShuffled ? 'bg-purple-600 border-purple-500' : 'bg-gray-700 border-gray-600'} hover:bg-purple-600`}
+                  >
+                    <Icon name="Shuffle" size={18} />
+                  </Button>
 
-                {/* Controls */}
-                <div className="flex items-center justify-center space-x-6">
                   <Button
                     onClick={playPrevious}
-                    variant="ghost"
+                    variant="outline"
                     size="lg"
-                    className="text-white hover:text-[#6366F1] hover:bg-gray-800/50 rounded-full w-12 h-12 hover-scale transition-all duration-300"
-                    disabled={tracks.length === 0}
+                    className="rounded-full bg-gray-700 border-gray-600 hover:bg-gray-600"
+                    disabled={!currentTrack}
                   >
-                    <Icon name="SkipBack" size={24} />
+                    <Icon name="SkipBack" size={20} />
                   </Button>
-                  
+
                   <Button
                     onClick={togglePlayPause}
                     size="lg"
-                    className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white rounded-full w-20 h-20 shadow-2xl hover-scale transition-all duration-300 animate-pulse"
+                    className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-16 h-16 shadow-xl"
                     disabled={!currentTrack}
                   >
-                    <Icon name={isPlaying ? "Pause" : "Play"} size={36} />
+                    <Icon name={isPlaying ? "Pause" : "Play"} size={28} />
                   </Button>
-                  
+
                   <Button
                     onClick={playNext}
-                    variant="ghost"
+                    variant="outline"
                     size="lg"
-                    className="text-white hover:text-[#6366F1] hover:bg-gray-800/50 rounded-full w-12 h-12 hover-scale transition-all duration-300"
-                    disabled={tracks.length === 0}
+                    className="rounded-full bg-gray-700 border-gray-600 hover:bg-gray-600"
+                    disabled={!currentTrack}
                   >
-                    <Icon name="SkipForward" size={24} />
+                    <Icon name="SkipForward" size={20} />
+                  </Button>
+
+                  <Button
+                    onClick={() => setIsRepeat(!isRepeat)}
+                    variant="outline"
+                    size="lg"
+                    className={`rounded-full ${isRepeat ? 'bg-purple-600 border-purple-500' : 'bg-gray-700 border-gray-600'} hover:bg-purple-600`}
+                  >
+                    <Icon name="Repeat" size={18} />
                   </Button>
                 </div>
 
                 {/* Volume Control */}
-                <div className="flex items-center space-x-4 p-4 bg-gray-800/30 rounded-xl">
+                <div className="flex items-center space-x-4">
                   <Icon name="Volume2" size={20} className="text-gray-400" />
                   <Slider
                     value={volume}
+                    onValueChange={setVolume}
                     max={100}
                     step={1}
-                    onValueChange={setVolume}
                     className="flex-1"
                   />
-                  <span className="text-sm text-gray-300 font-mono w-12">{volume[0]}%</span>
+                  <span className="text-sm text-gray-400 w-10">{volume[0]}%</span>
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Playlist */}
-          <div>
-            <Card className="bg-gradient-to-br from-[#2D2D2D] to-[#1F1F23] border-gray-600 shadow-2xl backdrop-blur-sm animate-scale-in delay-200">
+            {/* Track List */}
+            <Card className="bg-gray-900/80 border-purple-500/30 backdrop-blur-sm shadow-2xl">
               <CardHeader className="pb-4">
-                <CardTitle className="text-white flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-lg flex items-center justify-center mr-3">
-                      <Icon name="Music" size={16} className="text-white" />
-                    </div>
-                    <span>Плейлист</span>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white flex items-center space-x-2">
+                    <Icon name="Music" size={20} className="text-purple-400" />
+                    <span>{currentPlaylist.name}</span>
+                    <span className="text-purple-400">({currentPlaylist.tracks.length})</span>
+                  </CardTitle>
+                  <div className="flex space-x-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      accept="audio/*"
+                      multiple
+                      className="hidden"
+                    />
+                    <Button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-green-600 hover:bg-green-700 shadow-lg"
+                    >
+                      <Icon name="Upload" size={16} className="mr-2" />
+                      Загрузить музыку
+                    </Button>
                   </div>
-                  <div className="bg-gradient-to-r from-[#6366F1]/20 to-[#8B5CF6]/20 px-3 py-1 rounded-full">
-                    <span className="text-sm font-mono">{tracks.length}</span>
-                  </div>
-                </CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                {tracks.length === 0 ? (
-                  <div className="text-center py-12 text-gray-400">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-[#6366F1]/20 to-[#8B5CF6]/20 rounded-full flex items-center justify-center">
-                      <Icon name="Music" size={32} className="opacity-50" />
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {currentPlaylist.tracks.length === 0 ? (
+                    <div className="text-center py-12 text-gray-400">
+                      <Icon name="Music" size={48} className="mx-auto mb-4 opacity-50" />
+                      <p className="text-lg">Плейлист пуст</p>
+                      <p className="text-sm">Загрузите музыку, чтобы начать слушать</p>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2 text-gray-300">Плейлист пуст</h3>
-                    <p className="text-sm text-gray-500">Загрузите музыку для начала</p>
-                    <div className="mt-6">
-                      <Button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white border-0"
-                        size="sm"
-                      >
-                        <Icon name="Plus" size={16} className="mr-2" />
-                        Добавить треки
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-2 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                    {tracks.map((track, index) => (
+                  ) : (
+                    currentPlaylist.tracks.map((track, index) => (
                       <div
                         key={track.id}
-                        className={`group p-4 rounded-xl cursor-pointer transition-all duration-300 ${
+                        className={`group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 ${
                           currentTrack?.id === track.id
-                            ? 'bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-lg'
-                            : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:shadow-md'
+                            ? 'bg-gradient-to-r from-purple-600/30 to-pink-600/30 border border-purple-500/50 shadow-lg'
+                            : 'hover:bg-gray-800/60 border border-transparent'
                         }`}
+                        onClick={() => selectTrack(track)}
                       >
-                        <div className="flex items-center space-x-3">
-                          <div 
-                            className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              track.isDemo ? loadDemoTrack(track) : selectTrack(track);
-                            }}
-                          >
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                              currentTrack?.id === track.id 
-                                ? 'bg-white/20 text-white' 
-                                : 'bg-[#6366F1]/20 text-[#6366F1] group-hover:bg-[#6366F1] group-hover:text-white'
-                            }`}>
-                              {currentTrack?.id === track.id && isPlaying ? (
-                                <Icon name="Pause" size={14} />
-                              ) : (
-                                <Icon name="Play" size={14} />
-                              )}
-                            </div>
+                        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mr-4 shadow-lg">
+                          <Icon 
+                            name={currentTrack?.id === track.id && isPlaying ? "Pause" : "Play"} 
+                            size={16} 
+                            className="text-white" 
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <p className="font-semibold truncate text-white">{track.name}</p>
+                            {track.isBuiltIn && (
+                              <span className="bg-purple-600/40 text-purple-300 text-xs px-2 py-0.5 rounded-full border border-purple-500/30">
+                                ВСТРОЕННЫЙ
+                              </span>
+                            )}
                           </div>
-                          <div className="flex-1 min-w-0" onClick={() => track.isDemo ? loadDemoTrack(track) : selectTrack(track)}>
-                            <div className="flex items-center justify-between">
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center space-x-2 mb-1">
-                                  <p className="font-semibold truncate text-sm">{track.name}</p>
-                                  {track.isDemo && (
-                                    <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                      currentTrack?.id === track.id 
-                                        ? 'bg-white/20 text-white' 
-                                        : 'bg-[#6366F1]/20 text-[#6366F1]'
-                                    }`}>
-                                      DEMO
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-xs text-gray-400 truncate mb-1">{track.artist}</p>
-                                <div className="flex items-center space-x-2 text-xs opacity-75">
-                                  <span>#{index + 1}</span>
-                                  {currentTrack?.id === track.id && (
-                                    <>
-                                      <span>•</span>
-                                      <span className="flex items-center space-x-1">
-                                        <div className="w-1.5 h-1.5 bg-current rounded-full animate-pulse"></div>
-                                        <span>Играет</span>
-                                      </span>
-                                    </>
-                                  )}
-                                </div>
-                              </div>
-                              {!track.isDemo && (
-                                <Button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    removeTrack(track.id);
-                                  }}
-                                  variant="ghost"
-                                  size="sm"
-                                  className={`opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 p-0 rounded-lg ${
-                                    currentTrack?.id === track.id
-                                      ? 'hover:bg-white/20 text-white'
-                                      : 'hover:bg-red-500/20 text-red-400 hover:text-red-300'
-                                  }`}
-                                >
-                                  <Icon name="Trash2" size={14} />
-                                </Button>
-                              )}
-                            </div>
+                          <p className="text-sm text-gray-300 truncate mb-1">{track.artist}</p>
+                          <div className="flex items-center space-x-2 text-xs text-gray-500">
+                            <span>#{index + 1}</span>
+                            <span>•</span>
+                            <span>{formatTime(track.duration)}</span>
+                            {currentTrack?.id === track.id && (
+                              <>
+                                <span>•</span>
+                                <span className="flex items-center space-x-1 text-green-400">
+                                  <div className="w-1.5 h-1.5 bg-current rounded-full animate-pulse"></div>
+                                  <span>Играет</span>
+                                </span>
+                              </>
+                            )}
                           </div>
                         </div>
+
+                        {!track.isBuiltIn && (
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeTrack(track.id);
+                            }}
+                            variant="ghost"
+                            size="sm"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/20 text-red-400 hover:text-red-300"
+                          >
+                            <Icon name="Trash2" size={16} />
+                          </Button>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    ))
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Hidden file input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="audio/*"
-          multiple
-          onChange={handleFileUpload}
-          className="hidden"
-        />
-
-        {/* Hidden audio element */}
-        {currentTrack && (
-          <audio
-            ref={audioRef}
-            src={currentTrack.url}
-            preload="metadata"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          />
-        )}
+        {/* Hidden Audio Element for uploaded tracks */}
+        <audio ref={audioRef} />
       </div>
     </div>
   );
