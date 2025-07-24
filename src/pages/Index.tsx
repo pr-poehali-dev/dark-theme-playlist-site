@@ -107,6 +107,21 @@ function Index() {
     setIsPlaying(true);
   };
 
+  const removeTrack = (trackId: string) => {
+    const updatedTracks = tracks.filter(t => t.id !== trackId);
+    setTracks(updatedTracks);
+    
+    if (currentTrack?.id === trackId) {
+      if (updatedTracks.length > 0) {
+        setCurrentTrack(updatedTracks[0]);
+        setIsPlaying(true);
+      } else {
+        setCurrentTrack(null);
+        setIsPlaying(false);
+      }
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -121,41 +136,68 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-white p-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-[#0F0F14] via-[#1A1A1A] to-[#0A0A0F] text-white p-4 relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-[#D946EF] to-[#F97316] rounded-full blur-3xl animate-pulse delay-700"></div>
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] bg-clip-text text-transparent">
-            Music Player
-          </h1>
-          <p className="text-gray-400">
-            Загружайте и слушайте вашу музыку
+        <div className="text-center mb-12">
+          <div className="inline-block">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#D946EF] bg-clip-text text-transparent animate-fade-in">
+              🎵 Music Player
+            </h1>
+            <div className="h-1 w-full bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full animate-fade-in delay-300"></div>
+          </div>
+          <p className="text-gray-300 text-lg mt-4 animate-fade-in delay-500">
+            Загружайте и слушайте вашу музыку в стиле
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Player */}
           <div className="lg:col-span-2">
-            <Card className="bg-[#2D2D2D] border-gray-700">
-              <CardHeader>
+            <Card className="bg-gradient-to-br from-[#2D2D2D] to-[#1F1F23] border-gray-600 shadow-2xl backdrop-blur-sm animate-scale-in">
+              <CardHeader className="pb-2">
                 <CardTitle className="flex items-center justify-between">
-                  <span className="text-white">
-                    {currentTrack ? currentTrack.name : 'Выберите трек'}
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xl font-bold text-white truncate">
+                      {currentTrack ? currentTrack.name : 'Выберите трек'}
+                    </h2>
+                    {currentTrack && (
+                      <p className="text-sm text-gray-400 mt-1">Сейчас играет</p>
+                    )}
+                  </div>
                   <Button
                     onClick={() => fileInputRef.current?.click()}
-                    variant="outline"
+                    className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white border-0 shadow-lg hover-scale transition-all duration-300"
                     size="sm"
-                    className="border-[#6366F1] text-[#6366F1] hover:bg-[#6366F1] hover:text-white"
                   >
                     <Icon name="Upload" size={16} className="mr-2" />
                     Загрузить
                   </Button>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-8 pt-6">
+                {/* Now Playing Display */}
+                {currentTrack && (
+                  <div className="text-center p-6 bg-gradient-to-r from-[#6366F1]/10 to-[#8B5CF6]/10 rounded-xl border border-[#6366F1]/20">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full flex items-center justify-center animate-pulse">
+                      <Icon name={isPlaying ? "Pause" : "Play"} size={24} className="text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">{currentTrack.name}</h3>
+                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-400">
+                      <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`}></div>
+                      <span>{isPlaying ? 'Воспроизводится' : 'Приостановлено'}</span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Progress Bar */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Slider
                     value={[currentTime]}
                     max={duration || 100}
@@ -164,18 +206,18 @@ function Index() {
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-gray-400">
-                    <span>{formatTime(currentTime)}</span>
-                    <span>{formatTime(duration)}</span>
+                    <span className="font-mono">{formatTime(currentTime)}</span>
+                    <span className="font-mono">{formatTime(duration)}</span>
                   </div>
                 </div>
 
                 {/* Controls */}
-                <div className="flex items-center justify-center space-x-4">
+                <div className="flex items-center justify-center space-x-6">
                   <Button
                     onClick={playPrevious}
                     variant="ghost"
                     size="lg"
-                    className="text-white hover:text-[#6366F1] hover:bg-gray-800"
+                    className="text-white hover:text-[#6366F1] hover:bg-gray-800/50 rounded-full w-12 h-12 hover-scale transition-all duration-300"
                     disabled={tracks.length === 0}
                   >
                     <Icon name="SkipBack" size={24} />
@@ -184,17 +226,17 @@ function Index() {
                   <Button
                     onClick={togglePlayPause}
                     size="lg"
-                    className="bg-[#6366F1] hover:bg-[#5B5AF0] text-white rounded-full w-16 h-16"
+                    className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white rounded-full w-20 h-20 shadow-2xl hover-scale transition-all duration-300 animate-pulse"
                     disabled={!currentTrack}
                   >
-                    <Icon name={isPlaying ? "Pause" : "Play"} size={32} />
+                    <Icon name={isPlaying ? "Pause" : "Play"} size={36} />
                   </Button>
                   
                   <Button
                     onClick={playNext}
                     variant="ghost"
                     size="lg"
-                    className="text-white hover:text-[#6366F1] hover:bg-gray-800"
+                    className="text-white hover:text-[#6366F1] hover:bg-gray-800/50 rounded-full w-12 h-12 hover-scale transition-all duration-300"
                     disabled={tracks.length === 0}
                   >
                     <Icon name="SkipForward" size={24} />
@@ -202,7 +244,7 @@ function Index() {
                 </div>
 
                 {/* Volume Control */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-4 p-4 bg-gray-800/30 rounded-xl">
                   <Icon name="Volume2" size={20} className="text-gray-400" />
                   <Slider
                     value={volume}
@@ -211,7 +253,7 @@ function Index() {
                     onValueChange={setVolume}
                     className="flex-1"
                   />
-                  <span className="text-sm text-gray-400 w-12">{volume[0]}%</span>
+                  <span className="text-sm text-gray-300 font-mono w-12">{volume[0]}%</span>
                 </div>
               </CardContent>
             </Card>
@@ -219,42 +261,103 @@ function Index() {
 
           {/* Playlist */}
           <div>
-            <Card className="bg-[#2D2D2D] border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Icon name="Music" size={20} className="mr-2" />
-                  Плейлист ({tracks.length})
+            <Card className="bg-gradient-to-br from-[#2D2D2D] to-[#1F1F23] border-gray-600 shadow-2xl backdrop-blur-sm animate-scale-in delay-200">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-white flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-lg flex items-center justify-center mr-3">
+                      <Icon name="Music" size={16} className="text-white" />
+                    </div>
+                    <span>Плейлист</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-[#6366F1]/20 to-[#8B5CF6]/20 px-3 py-1 rounded-full">
+                    <span className="text-sm font-mono">{tracks.length}</span>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {tracks.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400">
-                    <Icon name="Music" size={48} className="mx-auto mb-4 opacity-50" />
-                    <p className="mb-2">Плейлист пуст</p>
-                    <p className="text-sm">Загрузите музыку для начала</p>
+                  <div className="text-center py-12 text-gray-400">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-[#6366F1]/20 to-[#8B5CF6]/20 rounded-full flex items-center justify-center">
+                      <Icon name="Music" size={32} className="opacity-50" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-300">Плейлист пуст</h3>
+                    <p className="text-sm text-gray-500">Загрузите музыку для начала</p>
+                    <div className="mt-6">
+                      <Button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#5B5AF0] hover:to-[#7E69AB] text-white border-0"
+                        size="sm"
+                      >
+                        <Icon name="Plus" size={16} className="mr-2" />
+                        Добавить треки
+                      </Button>
+                    </div>
                   </div>
                 ) : (
-                  <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {tracks.map((track) => (
+                  <div className="space-y-2 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                    {tracks.map((track, index) => (
                       <div
                         key={track.id}
-                        onClick={() => selectTrack(track)}
-                        className={`p-3 rounded-lg cursor-pointer transition-all ${
+                        className={`group p-4 rounded-xl cursor-pointer transition-all duration-300 ${
                           currentTrack?.id === track.id
-                            ? 'bg-[#6366F1] text-white'
-                            : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+                            ? 'bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-lg'
+                            : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:shadow-md'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <div className="flex-shrink-0">
-                            {currentTrack?.id === track.id && isPlaying ? (
-                              <Icon name="Pause" size={16} />
-                            ) : (
-                              <Icon name="Play" size={16} />
-                            )}
+                          <div 
+                            className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              selectTrack(track);
+                            }}
+                          >
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                              currentTrack?.id === track.id 
+                                ? 'bg-white/20 text-white' 
+                                : 'bg-[#6366F1]/20 text-[#6366F1] group-hover:bg-[#6366F1] group-hover:text-white'
+                            }`}>
+                              {currentTrack?.id === track.id && isPlaying ? (
+                                <Icon name="Pause" size={14} />
+                              ) : (
+                                <Icon name="Play" size={14} />
+                              )}
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{track.name}</p>
+                          <div className="flex-1 min-w-0" onClick={() => selectTrack(track)}>
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1 min-w-0">
+                                <p className="font-semibold truncate text-sm mb-1">{track.name}</p>
+                                <div className="flex items-center space-x-2 text-xs opacity-75">
+                                  <span>#{index + 1}</span>
+                                  {currentTrack?.id === track.id && (
+                                    <>
+                                      <span>•</span>
+                                      <span className="flex items-center space-x-1">
+                                        <div className="w-1.5 h-1.5 bg-current rounded-full animate-pulse"></div>
+                                        <span>Играет</span>
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeTrack(track.id);
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className={`opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 p-0 rounded-lg ${
+                                  currentTrack?.id === track.id
+                                    ? 'hover:bg-white/20 text-white'
+                                    : 'hover:bg-red-500/20 text-red-400 hover:text-red-300'
+                                }`}
+                              >
+                                <Icon name="Trash2" size={14} />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
